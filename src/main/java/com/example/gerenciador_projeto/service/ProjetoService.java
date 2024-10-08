@@ -8,6 +8,7 @@ import com.example.gerenciador_projeto.util.ProjetoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,8 +22,19 @@ public class ProjetoService {
       return ProjetoMapper.toDTO(projetoRepository.save(projeto));
    }
 
-//   public List<ProjetoDTO> listarPorUsuario(Usuario usuario) {
-//
-//   }
+   public List<ProjetoDTO> listarPorUsuario(Usuario usuario) {
+      List<Projeto> listaEntity = projetoRepository.findByUsuario(usuario);
+      ArrayList<ProjetoDTO> listaDTO = new ArrayList<>();
+      for (Projeto projeto : listaEntity) {
+         listaDTO.add(ProjetoMapper.toDTO(projeto));
+      }
+      return listaDTO;
+   }
+
+   public Projeto buscarPorId(Long id) {
+      return projetoRepository.findById(id).orElse(null);
+   }
+
+
 
 }

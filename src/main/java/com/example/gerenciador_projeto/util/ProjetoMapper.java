@@ -3,7 +3,6 @@ package com.example.gerenciador_projeto.util;
 import com.example.gerenciador_projeto.dto.ProjetoDTO;
 import com.example.gerenciador_projeto.entities.Projeto;
 import com.example.gerenciador_projeto.entities.Usuario;
-import org.apache.tomcat.jni.Pool;
 
 public class ProjetoMapper {
 
@@ -19,7 +18,7 @@ public class ProjetoMapper {
       return dto;
    }
 
-   public static Projeto toEntity(ProjetoDTO dto){
+   public static Projeto toEntity(ProjetoDTO dto) {
 
       Projeto entity = new Projeto();
       entity.setId(dto.getId());
