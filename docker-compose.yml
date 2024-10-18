@@ -8,9 +8,9 @@ services:
       - "8080:8080"
     environment:
       SPRING_APPLICATION_NAME: gerenciador_projeto
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/gerenciador_projeto
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cs45ii52ng1s739eisgg-a.oregon-postgres.render.com:5432/gerenciador_projeto
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_PASSWORD: iZXI2FzQyEJGEdFbRU8FmGs431fBs4Wr
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
       SPRING_JPA_HIBERNATE_DDL-AUTO: update
     depends_on:
