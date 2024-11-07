@@ -10,10 +10,10 @@ public class UsuarioMapper {
       UsuarioDTO dto = new UsuarioDTO();
       dto.setId(entity.getId());
       dto.setNome(entity.getNome());
-      dto.setUsername(entity.getUsername());
+      dto.setSenha(entity.getEmail());
       dto.setDeleted(entity.isDeleted());
       dto.setDataCriacao(entity.getDataCriacao());
-      dto.setPassword(entity.getPassword());
+      dto.setSenha(entity.getSenha());
       return dto;
 
    }
@@ -24,9 +24,9 @@ public class UsuarioMapper {
       entity.setDataCriacao(dto.getDataCriacao());
       entity.setId(dto.getId());
       entity.setNome(dto.getNome());
-      entity.setUsername(dto.getUsername());
+      entity.setEmail(dto.getEmail());
       entity.setDeleted(dto.isDeleted());
-      entity.setPassword(dto.getPassword());
+      entity.setSenha(dto.getSenha());
       return entity;
 
    }

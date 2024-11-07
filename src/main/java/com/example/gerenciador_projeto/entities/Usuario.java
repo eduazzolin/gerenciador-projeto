@@ -22,8 +22,8 @@ public class Usuario {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    private String nome;
-   private String username;
-   private String password;
+   private String email;
+   private String senha;
    private LocalDateTime dataCriacao;
    private boolean isDeleted;
 

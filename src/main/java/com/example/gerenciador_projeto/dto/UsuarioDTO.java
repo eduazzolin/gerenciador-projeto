@@ -15,9 +15,9 @@ public class UsuarioDTO {
 
    private Long id;
    private String nome;
-   private String username;
+   private String email;
    private LocalDateTime dataCriacao;
    private boolean isDeleted;
-   private String password;
+   private String senha;
 
 }

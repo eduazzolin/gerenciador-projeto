@@ -19,8 +19,8 @@ public class HistoricoTarefa {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    private LocalDateTime dataOcorrencia;
-   private String statusAntigo;
-   private String statusNovo;
+   private Long idStatusAntigo;
+   private Long idStatusNovo;
 
    @ManyToOne
    @JoinColumn(name = "id_tarefa")
