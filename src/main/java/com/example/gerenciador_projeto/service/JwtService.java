@@ -21,11 +21,12 @@ import java.util.Date;
 @Service
 public class JwtService implements JwtRepository {
 
-   @Value("11")
+   @Value("${JWT_EXPIRACAO}")
    private String expiracao;
 
-   @Value("222")
+   @Value("${JWT_CHAVE_ASSINATURA}")
    private String chaveAssinatura;
+
 
    @Override
    public String generateToken(Usuario usuario) {

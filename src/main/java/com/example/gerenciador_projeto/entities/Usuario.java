@@ -1,9 +1,6 @@
 package com.example.gerenciador_projeto.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +19,7 @@ public class Usuario {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    private String nome;
+   @Column(unique = true)
    private String email;
    private String senha;
    private LocalDateTime dataCriacao;
