@@ -25,26 +25,39 @@ public class TarefaService {
    @Autowired
    private Validacoes validacoes;
 
-   public TarefaDTO criar(TarefaDTO tarefaDTO) {
+   public TarefaDTO criar(TarefaDTO tarefaDTO, Long userId) {
 
       Usuario usuarioRequisicao = new Usuario();
-      usuarioRequisicao.setId(1L); // todo: deixar dinÂmico
+      usuarioRequisicao.setId(userId);
 
       if (
               !validacoes.validarStatusTarefa(tarefaDTO) ||
                       !validacoes.validarProjetoTarefa(tarefaDTO, usuarioRequisicao)
 
       ) {
-         return null;
+         // throw error
+         throw new RuntimeException("Erro ao criar tarefa");
       }
 
       Tarefa tarefa = TarefaMapper.toEntity(tarefaDTO);
       return TarefaMapper.toDTO(tarefaRepository.save(tarefa));
    }
 
-   public Tarefa buscarPorId(Long id) {
-      return tarefaRepository.findById(id).orElse(null);
+   public Tarefa buscarPorId(Long id, Long userId) {
+      return tarefaRepository.findByIdAndProjetoUsuarioId(id, userId)
+              .orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
    }
+
+   public List<TarefaDTO> listarPorUsuario(Usuario usuario) {
+      List<Tarefa> tarefas = tarefaRepository.findByProjetoUsuarioId(usuario.getId());
+      List<TarefaDTO> tarefasDTO = new ArrayList<>();
+      for (Tarefa tarefa : tarefas) {
+         tarefasDTO.add(TarefaMapper.toDTO(tarefa));
+      }
+      return tarefasDTO;
+   }
+
+
 
 
 }

@@ -31,8 +31,11 @@ public class ProjetoService {
       return listaDTO;
    }
 
-   public Projeto buscarPorId(Long id) {
-      return projetoRepository.findById(id).orElse(null);
+   public Projeto buscarPorId(Long id, Long userId) {
+      Usuario usuario = new Usuario();
+      usuario.setId(userId);
+      return projetoRepository.findByIdAndUsuario(id, usuario)
+              .orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
    }
 
 

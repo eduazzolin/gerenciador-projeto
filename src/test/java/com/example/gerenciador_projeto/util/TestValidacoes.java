@@ -34,7 +34,7 @@ public class TestValidacoes {
 
    @Test
    public void testValidarStatusTarefaDeveRetornarFalsoStatusInexistente() {
-      List<Status> statusList = Arrays.asList(new Status(1L, "Em Progresso"), new Status(2L, "Concluído"));
+      List<Status> statusList = Arrays.asList(new Status(1L, "Em Progresso", "secondary", "#6c757d"), new Status(2L, "Concluído", "primary", "#0d6efd"));
       when(statusService.listar()).thenReturn(statusList);
 
       TarefaDTO dto = new TarefaDTO();
@@ -58,7 +58,7 @@ public class TestValidacoes {
 
     @Test
     public void testValidarStatusTarefaDeveRetornarTrueStatusValido() {
-        List<Status> statusList = Arrays.asList(new Status(1L, "Em Progresso"), new Status(2L, "Concluído"));
+        List<Status> statusList = Arrays.asList(new Status(1L, "Em Progresso", "secondary", "#6c757d"), new Status(2L, "Concluído", "primary", "#0d6efd"));
         when(statusService.listar()).thenReturn(statusList);
 
         TarefaDTO dto = new TarefaDTO();

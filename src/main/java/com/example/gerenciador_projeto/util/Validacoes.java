@@ -2,6 +2,7 @@ package com.example.gerenciador_projeto.util;
 
 import com.example.gerenciador_projeto.dto.ProjetoDTO;
 import com.example.gerenciador_projeto.dto.TarefaDTO;
+import com.example.gerenciador_projeto.entities.Projeto;
 import com.example.gerenciador_projeto.entities.Status;
 import com.example.gerenciador_projeto.entities.Usuario;
 import com.example.gerenciador_projeto.service.ProjetoService;
@@ -47,5 +48,6 @@ public class Validacoes {
       }
       return false;
    }
+
 
 }
