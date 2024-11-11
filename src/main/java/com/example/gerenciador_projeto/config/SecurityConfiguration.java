@@ -17,8 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,10 +41,9 @@ public class SecurityConfiguration {
    }
 
    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
       auth
-              .userDetailsService(userDetailsService)
-              .passwordEncoder(passwordEncoder());
+         .userDetailsService(userDetailsService)
+         .passwordEncoder(passwordEncoder());
    }
 
    @Bean
@@ -55,30 +54,33 @@ public class SecurityConfiguration {
    @Bean
    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
       http
-              .csrf(AbstractHttpConfigurer::disable)
-              .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-              .authorizeHttpRequests(authz -> authz
-                      .requestMatchers(
-                              new AntPathRequestMatcher("/usuarios/autenticar", HttpMethod.POST.name()),
-                              new AntPathRequestMatcher("/usuarios", HttpMethod.POST.name())
-                      ).permitAll()
-                      .anyRequest().authenticated()
-              )
-              .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+         .cors() // Enable CORS at Spring Security level
+         .and()
+         .csrf(AbstractHttpConfigurer::disable)
+         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+         .authorizeHttpRequests(authz -> authz
+            .requestMatchers(
+               new AntPathRequestMatcher("/usuarios/autenticar", HttpMethod.POST.name()),
+               new AntPathRequestMatcher("/usuarios", HttpMethod.POST.name())
+            ).permitAll()
+            .anyRequest().authenticated()
+         )
+         .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
       return http.build();
    }
 
    @Bean
-   public CorsFilter corsFilter() {
-      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+   public CorsConfigurationSource corsConfigurationSource() {
       CorsConfiguration config = new CorsConfiguration();
       config.setAllowCredentials(true);
-      config.setAllowedOriginPatterns(List.of("*"));
+      config.setAllowedOriginPatterns(List.of("http://localhost:3000")); // Update with your frontend's origin
       config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
       config.setAllowedHeaders(List.of("*"));
+      config.setExposedHeaders(List.of("Authorization")); // If you need to expose any headers
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
       source.registerCorsConfiguration("/**", config);
 
-      return new CorsFilter(source);
+      return source;
    }
 }

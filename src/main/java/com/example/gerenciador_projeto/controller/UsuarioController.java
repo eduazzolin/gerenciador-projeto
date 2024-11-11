@@ -43,6 +43,7 @@ public class UsuarioController {
 
    @PostMapping("/autenticar")
    public ResponseEntity<?> autenticar(@RequestBody UsuarioDTO dto) {
+      System.out.println(dto);
       try {
          Usuario usurioAutenticado = service.autenticar(dto.getEmail(), dto.getSenha());
          TokenDTO tokenDTO = new TokenDTO(usurioAutenticado.getNome(), jwtService.generateToken(usurioAutenticado));
