@@ -19,6 +19,8 @@ public class Tarefa {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    private String nome;
+
+   @Column(length = 1000)
    private String descricao;
    private LocalDateTime dataCriacao;
    private boolean isDeleted;
