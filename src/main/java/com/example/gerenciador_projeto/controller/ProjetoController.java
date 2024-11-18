@@ -7,6 +7,7 @@ import com.example.gerenciador_projeto.service.ProjetoService;
 import com.example.gerenciador_projeto.util.JWTUtils;
 import com.example.gerenciador_projeto.util.ProjetoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,13 +36,15 @@ public class ProjetoController {
    }
 
    @DeleteMapping("/{id}")
-   public void excluir(@PathVariable Long id, @RequestHeader("Authorization") String authorizationHeader) {
+   public ResponseEntity<?> excluir(@PathVariable Long id, @RequestHeader("Authorization") String authorizationHeader) {
       String token = authorizationHeader.replace("Bearer ", "");
       Long userId = JWTUtils.getUserId(token);
-      Projeto entidade = projetoService.buscarPorId(id, userId);
-      entidade.setDeleted(true);
-      ProjetoDTO dto = ProjetoMapper.toDTO(entidade);
-      projetoService.criar(dto);
+      try {
+         projetoService.excluir(id, userId);
+         return ResponseEntity.ok().build();
+      } catch (Exception e) {
+         return ResponseEntity.badRequest().body(e.getMessage());
+      }
    }
 
 }

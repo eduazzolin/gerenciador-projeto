@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ProjetoRepository extends JpaRepository <Projeto, Long> {
 
-   List<Projeto> findByUsuario(Usuario usuario);
+   List<Projeto> findByUsuarioAndIsDeletedFalse(Usuario usuario);
    Optional<Projeto> findByIdAndUsuario(Long id, Usuario usuario);
 
 

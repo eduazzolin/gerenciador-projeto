@@ -1,10 +1,13 @@
 package com.example.gerenciador_projeto.service;
 
+import com.example.gerenciador_projeto.dto.ComentarioDTO;
 import com.example.gerenciador_projeto.dto.ProjetoDTO;
 import com.example.gerenciador_projeto.dto.TarefaDTO;
+import com.example.gerenciador_projeto.entities.Comentario;
 import com.example.gerenciador_projeto.entities.Projeto;
 import com.example.gerenciador_projeto.entities.Tarefa;
 import com.example.gerenciador_projeto.entities.Usuario;
+import com.example.gerenciador_projeto.repository.ComentarioRepository;
 import com.example.gerenciador_projeto.repository.ProjetoRepository;
 import com.example.gerenciador_projeto.repository.TarefaRepository;
 import com.example.gerenciador_projeto.util.ProjetoMapper;
@@ -13,6 +16,8 @@ import com.example.gerenciador_projeto.util.Validacoes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +26,9 @@ public class TarefaService {
 
    @Autowired
    private TarefaRepository tarefaRepository;
+
+   @Autowired
+   private ComentarioRepository comentarioRepository;
 
    @Autowired
    private Validacoes validacoes;
@@ -43,6 +51,22 @@ public class TarefaService {
       return TarefaMapper.toDTO(tarefaRepository.save(tarefa));
    }
 
+   public Comentario criarComentario(ComentarioDTO comentarioDTO, Long userId) {
+      Usuario usuarioRequisicao = new Usuario();
+      usuarioRequisicao.setId(userId);
+      Tarefa tarefa = tarefaRepository.findByIdAndProjetoUsuarioId(comentarioDTO.getIdTarefa(), userId)
+              .orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
+      Comentario comentario = new Comentario();
+      comentario.setTarefa(tarefa);
+      comentario.setDataCriacao(LocalDateTime.now());
+      comentario.setComentario(comentarioDTO.getComentario());
+      return comentarioRepository.save(comentario);
+   }
+
+   public List<Comentario> listarComentarios(Tarefa tarefa) {
+      return comentarioRepository.findComentariosByIdTarefa(tarefa.getId());
+   }
+
    public Tarefa buscarPorId(Long id, Long userId) {
       return tarefaRepository.findByIdAndProjetoUsuarioId(id, userId)
               .orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
@@ -50,6 +74,15 @@ public class TarefaService {
 
    public List<TarefaDTO> listarPorUsuario(Usuario usuario) {
       List<Tarefa> tarefas = tarefaRepository.findByProjetoUsuarioId(usuario.getId());
+      List<TarefaDTO> tarefasDTO = new ArrayList<>();
+      for (Tarefa tarefa : tarefas) {
+         tarefasDTO.add(TarefaMapper.toDTO(tarefa));
+      }
+      return tarefasDTO;
+   }
+
+   public List<TarefaDTO> listarPorUsuarioPorProjeto(Usuario usuario, Projeto projeto) {
+      List<Tarefa> tarefas = tarefaRepository.findByProjetoUsuarioIdAndProjetoId(usuario.getId(), projeto.getId());
       List<TarefaDTO> tarefasDTO = new ArrayList<>();
       for (Tarefa tarefa : tarefas) {
          tarefasDTO.add(TarefaMapper.toDTO(tarefa));

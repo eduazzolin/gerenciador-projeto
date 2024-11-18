@@ -1,5 +1,6 @@
 package com.example.gerenciador_projeto.repository;
 
+import com.example.gerenciador_projeto.entities.Comentario;
 import com.example.gerenciador_projeto.entities.Projeto;
 import com.example.gerenciador_projeto.entities.Tarefa;
 import com.example.gerenciador_projeto.entities.Usuario;
@@ -16,4 +17,8 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
    // select * from tarefa inner join projeto on tarefa.id_projeto = projeto.id where projeto.id_usuario = (id usuario)
    List<Tarefa> findByProjetoUsuarioId(Long usuarioId);
+
+   List<Tarefa> findByProjetoUsuarioIdAndProjetoId(Long usuarioId, Long projetoId);
+
+
 }

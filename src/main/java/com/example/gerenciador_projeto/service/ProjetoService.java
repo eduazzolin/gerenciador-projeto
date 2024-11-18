@@ -23,7 +23,7 @@ public class ProjetoService {
    }
 
    public List<ProjetoDTO> listarPorUsuario(Usuario usuario) {
-      List<Projeto> listaEntity = projetoRepository.findByUsuario(usuario);
+      List<Projeto> listaEntity = projetoRepository.findByUsuarioAndIsDeletedFalse(usuario);
       ArrayList<ProjetoDTO> listaDTO = new ArrayList<>();
       for (Projeto projeto : listaEntity) {
          listaDTO.add(ProjetoMapper.toDTO(projeto));
@@ -36,6 +36,13 @@ public class ProjetoService {
       usuario.setId(userId);
       return projetoRepository.findByIdAndUsuario(id, usuario)
               .orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+   }
+
+   public void excluir(Long id, Long userId) {
+      Projeto entidade = buscarPorId(id, userId);
+      entidade.setDeleted(true);
+      ProjetoDTO dto = ProjetoMapper.toDTO(entidade);
+      criar(dto);
    }
 
 
