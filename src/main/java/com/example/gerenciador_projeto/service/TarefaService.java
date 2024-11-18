@@ -1,22 +1,18 @@
 package com.example.gerenciador_projeto.service;
 
 import com.example.gerenciador_projeto.dto.ComentarioDTO;
-import com.example.gerenciador_projeto.dto.ProjetoDTO;
 import com.example.gerenciador_projeto.dto.TarefaDTO;
 import com.example.gerenciador_projeto.entities.Comentario;
 import com.example.gerenciador_projeto.entities.Projeto;
 import com.example.gerenciador_projeto.entities.Tarefa;
 import com.example.gerenciador_projeto.entities.Usuario;
 import com.example.gerenciador_projeto.repository.ComentarioRepository;
-import com.example.gerenciador_projeto.repository.ProjetoRepository;
 import com.example.gerenciador_projeto.repository.TarefaRepository;
-import com.example.gerenciador_projeto.util.ProjetoMapper;
 import com.example.gerenciador_projeto.util.TarefaMapper;
 import com.example.gerenciador_projeto.util.Validacoes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +60,7 @@ public class TarefaService {
    }
 
    public List<Comentario> listarComentarios(Tarefa tarefa) {
-      return comentarioRepository.findComentariosByIdTarefa(tarefa.getId());
+      return comentarioRepository.findComentariosByTarefa(tarefa);
    }
 
    public Tarefa buscarPorId(Long id, Long userId) {
@@ -82,7 +78,7 @@ public class TarefaService {
    }
 
    public List<TarefaDTO> listarPorUsuarioPorProjeto(Usuario usuario, Projeto projeto) {
-      List<Tarefa> tarefas = tarefaRepository.findByProjetoUsuarioIdAndProjetoId(usuario.getId(), projeto.getId());
+      List<Tarefa> tarefas = tarefaRepository.findByProjetoUsuarioIdAndProjetoIdAndIsDeletedFalse(usuario.getId(), projeto.getId());
       List<TarefaDTO> tarefasDTO = new ArrayList<>();
       for (Tarefa tarefa : tarefas) {
          tarefasDTO.add(TarefaMapper.toDTO(tarefa));
@@ -90,6 +86,10 @@ public class TarefaService {
       return tarefasDTO;
    }
 
+   public void deletarComentario(Long idComentario, Usuario usuario) {
+      Comentario comentario = comentarioRepository.findByIdAndTarefaProjetoUsuario(idComentario, usuario);
+      comentarioRepository.delete(comentario);
+   }
 
 
 

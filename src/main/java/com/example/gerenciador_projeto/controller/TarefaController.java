@@ -81,4 +81,13 @@ public class TarefaController {
       tarefaService.criar(dto, userId);
    }
 
+   @DeleteMapping("/{id}/comentarios/{idComentario}")
+   public void excluirComentario(@PathVariable Long id, @PathVariable Long idComentario, @RequestHeader("Authorization") String authorizationHeader) {
+      String token = authorizationHeader.replace("Bearer ", "");
+      Long userId = JWTUtils.getUserId(token);
+      Usuario usuario = new Usuario();
+      usuario.setId(userId);
+      tarefaService.deletarComentario(idComentario, usuario);
+   }
+
 }
