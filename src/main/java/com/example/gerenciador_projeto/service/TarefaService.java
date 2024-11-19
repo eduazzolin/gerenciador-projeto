@@ -31,6 +31,7 @@ public class TarefaService {
 
    public TarefaDTO criar(TarefaDTO tarefaDTO, Long userId) {
 
+      tarefaDTO.setDataCriacao(LocalDateTime.now());
       Usuario usuarioRequisicao = new Usuario();
       usuarioRequisicao.setId(userId);
 

@@ -8,6 +8,7 @@ import com.example.gerenciador_projeto.util.ProjetoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ProjetoService {
    private ProjetoRepository projetoRepository;
 
    public ProjetoDTO criar(ProjetoDTO projetoDTO){
+      projetoDTO.setDataCriacao(LocalDateTime.now());
       Projeto projeto = ProjetoMapper.toEntity(projetoDTO);
       return ProjetoMapper.toDTO(projetoRepository.save(projeto));
    }
