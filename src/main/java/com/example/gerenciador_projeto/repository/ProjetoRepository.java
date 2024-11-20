@@ -7,9 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProjetoRepository extends JpaRepository <Projeto, Long> {
+public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
 
    List<Projeto> findByUsuarioAndIsDeletedFalse(Usuario usuario);
+
    Optional<Projeto> findByIdAndUsuario(Long id, Usuario usuario);
 
 

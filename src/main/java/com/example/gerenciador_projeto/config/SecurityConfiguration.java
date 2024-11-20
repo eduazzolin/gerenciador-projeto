@@ -42,8 +42,8 @@ public class SecurityConfiguration {
 
    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
       auth
-         .userDetailsService(userDetailsService)
-         .passwordEncoder(passwordEncoder());
+              .userDetailsService(userDetailsService)
+              .passwordEncoder(passwordEncoder());
    }
 
    @Bean
@@ -54,18 +54,18 @@ public class SecurityConfiguration {
    @Bean
    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
       http
-         .cors() // Enable CORS at Spring Security level
-         .and()
-         .csrf(AbstractHttpConfigurer::disable)
-         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-         .authorizeHttpRequests(authz -> authz
-            .requestMatchers(
-               new AntPathRequestMatcher("/usuarios/autenticar", HttpMethod.POST.name()),
-               new AntPathRequestMatcher("/usuarios", HttpMethod.POST.name())
-            ).permitAll()
-            .anyRequest().authenticated()
-         )
-         .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+              .cors() // Enable CORS at Spring Security level
+              .and()
+              .csrf(AbstractHttpConfigurer::disable)
+              .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+              .authorizeHttpRequests(authz -> authz
+                      .requestMatchers(
+                              new AntPathRequestMatcher("/usuarios/autenticar", HttpMethod.POST.name()),
+                              new AntPathRequestMatcher("/usuarios", HttpMethod.POST.name())
+                      ).permitAll()
+                      .anyRequest().authenticated()
+              )
+              .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
       return http.build();
    }

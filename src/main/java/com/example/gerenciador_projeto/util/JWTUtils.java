@@ -10,15 +10,9 @@ import javax.annotation.PostConstruct;
 @Component
 public class JWTUtils {
 
+   private static String SECRET_KEY;
    @Value("${jwt.chave-assinatura}")
    private String secretKey;
-
-   private static String SECRET_KEY;
-
-   @PostConstruct
-   public void init() {
-      SECRET_KEY = this.secretKey;
-   }
 
    public static Long getUserId(String token) {
       Claims claims = Jwts.parser()
@@ -27,5 +21,10 @@ public class JWTUtils {
               .getBody();
       Number idNumber = claims.get("id", Number.class);
       return idNumber.longValue();
+   }
+
+   @PostConstruct
+   public void init() {
+      SECRET_KEY = this.secretKey;
    }
 }

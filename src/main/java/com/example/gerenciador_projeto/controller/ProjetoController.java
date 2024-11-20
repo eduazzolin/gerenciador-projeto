@@ -1,11 +1,9 @@
 package com.example.gerenciador_projeto.controller;
 
 import com.example.gerenciador_projeto.dto.ProjetoDTO;
-import com.example.gerenciador_projeto.entities.Projeto;
 import com.example.gerenciador_projeto.entities.Usuario;
 import com.example.gerenciador_projeto.service.ProjetoService;
 import com.example.gerenciador_projeto.util.JWTUtils;
-import com.example.gerenciador_projeto.util.ProjetoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

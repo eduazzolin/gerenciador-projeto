@@ -37,7 +37,7 @@ public class TarefaService {
 
       if (
               !validacoes.validarTarefaDTO(tarefaDTO) ||
-              !validacoes.validarStatusTarefa(tarefaDTO)
+                      !validacoes.validarStatusTarefa(tarefaDTO)
       ) {
          throw new RuntimeException("Erro ao criar tarefa");
       }
