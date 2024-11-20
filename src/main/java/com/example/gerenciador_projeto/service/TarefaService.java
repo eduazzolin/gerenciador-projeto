@@ -36,11 +36,9 @@ public class TarefaService {
       usuarioRequisicao.setId(userId);
 
       if (
-              !validacoes.validarStatusTarefa(tarefaDTO) ||
-                      !validacoes.validarProjetoTarefa(tarefaDTO, usuarioRequisicao)
-
+              !validacoes.validarTarefaDTO(tarefaDTO) ||
+              !validacoes.validarStatusTarefa(tarefaDTO)
       ) {
-         // throw error
          throw new RuntimeException("Erro ao criar tarefa");
       }
 
@@ -91,7 +89,6 @@ public class TarefaService {
       Comentario comentario = comentarioRepository.findByIdAndTarefaProjetoUsuario(idComentario, usuario);
       comentarioRepository.delete(comentario);
    }
-
 
 
 }

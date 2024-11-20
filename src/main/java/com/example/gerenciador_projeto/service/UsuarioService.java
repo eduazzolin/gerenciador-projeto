@@ -3,8 +3,8 @@ package com.example.gerenciador_projeto.service;
 import com.example.gerenciador_projeto.entities.Usuario;
 import com.example.gerenciador_projeto.repository.UsuarioRepository;
 import com.example.gerenciador_projeto.util.UsuarioUtils;
+import com.example.gerenciador_projeto.util.Validacoes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,20 +12,31 @@ import java.util.Optional;
 
 
 @Service
-public class UsuarioService  {
+public class UsuarioService {
 
    @Autowired
    private UsuarioRepository repository;
-
+   @Autowired
+   private Validacoes validacoes;
 
    public Optional<Usuario> obterPorId(Long id) {
       return repository.findById(id);
    }
 
    public Usuario salvar(Usuario usuario) {
-//      UsuarioUtils.validarEmail(usuario.getEmail()); #todo
-      UsuarioUtils.criptografarSenha(usuario);
       usuario.setDataCriacao(LocalDateTime.now());
+
+      if (!validacoes.validarUsuario(usuario)) {
+         throw new RuntimeException("Erro ao criar usuário");
+      }
+
+      if (usuario.getId() == null) {
+         repository.findByEmail(usuario.getEmail()).ifPresent(u -> {
+            throw new RuntimeException("Email já cadastrado");
+         });
+      }
+
+      UsuarioUtils.criptografarSenha(usuario);
       return repository.save(usuario);
    }
 
