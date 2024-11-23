@@ -16,13 +16,13 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: admin
-          POSTGRES_PASSWORD: admin
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
           POSTGRES_DB: gerenciador_projeto
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U admin"
+          --health-cmd "pg_isready -U test"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -40,7 +40,7 @@ jobs:
       # Wait for PostgreSQL to be ready
       - name: Wait for PostgreSQL
         run: |
-          while ! pg_isready -h localhost -U admin; do
+          while ! pg_isready -h localhost -U test; do
             sleep 1
           done
 
@@ -58,9 +58,11 @@ jobs:
 
       - name: Run tests
         env:
-          DATABASE_URL: jdbc:postgresql://localhost:5432/gerenciador_projeto
-          DATABASE_USERNAME: admin
-          DATABASE_PASSWORD: admin
+          DB_URL: jdbc:postgresql://localhost:5432/gerenciador_projeto
+          DB_USERNAME: test
+          DB_PASSWORD: test
+          JWT_EXPIRACAO: 3600  # Defina um valor adequado ou remova se não for necessário
+          JWT_CHAVE_ASSINATURA: test
         run: mvn clean test
 
   deploy:
