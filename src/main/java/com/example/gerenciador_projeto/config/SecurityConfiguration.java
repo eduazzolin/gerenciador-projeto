@@ -71,16 +71,20 @@ public class SecurityConfiguration {
    }
 
    @Bean
-   public CorsConfigurationSource corsConfigurationSource() {
-      CorsConfiguration config = new CorsConfiguration();
-      config.setAllowCredentials(true);
-      config.setAllowedOriginPatterns(List.of("http://localhost:3000")); // Update with your frontend's origin
-      config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-      config.setAllowedHeaders(List.of("*"));
-      config.setExposedHeaders(List.of("Authorization")); // If you need to expose any headers
-      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-      source.registerCorsConfiguration("/**", config);
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.setAllowedOriginPatterns(Arrays.asList(
+        "http://localhost:3000",
+        "https://gerenciador-projeto-tarefa.onrender.com"
+    ));
+    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    config.setAllowedHeaders(List.of("*"));
+    config.setExposedHeaders(List.of("Authorization")); // If you need to expose any headers
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
 
-      return source;
-   }
+    return source;
+}
+
 }
