@@ -13,6 +13,22 @@ import java.util.List;
 @Component
 public class Validacoes {
 
+   @Autowired
+   private StatusService statusService;
+
+   public boolean validarStatusTarefa(TarefaDTO dto) {
+      if (dto.getIdStatus() == null) {
+         return false;
+      }
+      List<Status> listaStatus = statusService.listar();
+      for (Status status : listaStatus) {
+         if (status.getId() == dto.getIdStatus()) {
+            return true;
+         }
+      }
+      return false;
+   }
+
 
    public boolean validarProjetoDTO(ProjetoDTO dto) {
       if (dto.getNome() == null || dto.getNome().isEmpty() || dto.getNome().length() > 50 || dto.getNome().length() < 3) {

@@ -23,6 +23,8 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class TestValidacoes {
 
+   @Mock
+   private StatusService statusService;
 
    @InjectMocks
    private Validacoes validacoes;
@@ -32,6 +34,44 @@ public class TestValidacoes {
       MockitoAnnotations.openMocks(this);
    }
 
+
+   @Test
+   public void testValidarStatusTarefaDeveRetornarFalsoStatusInexistente() {
+      List<Status> statusList = Arrays.asList(new Status(1L, "Em Progresso", "secondary", "#6c757d"), new Status(2L, "Concluído", "primary", "#0d6efd"));
+      when(statusService.listar()).thenReturn(statusList);
+
+      TarefaDTO dto = new TarefaDTO();
+      dto.setIdStatus(0L);
+
+      boolean resultado = validacoes.validarStatusTarefa(dto);
+
+      assertFalse(resultado);
+      verify(statusService, times(1)).listar(); // Verifica se o método listar foi chamado uma vez
+   }
+
+   @Test
+   public void testValidarStatusTarefaDeveRetornarFalsoStatusNulo() {
+      TarefaDTO dto = new TarefaDTO();
+
+      boolean resultado = validacoes.validarStatusTarefa(dto);
+
+      assertFalse(resultado);
+      verifyNoInteractions(statusService);
+   }
+
+   @Test
+   public void testValidarStatusTarefaDeveRetornarTrueStatusValido() {
+      List<Status> statusList = Arrays.asList(new Status(1L, "Em Progresso", "secondary", "#6c757d"), new Status(2L, "Concluído", "primary", "#0d6efd"));
+      when(statusService.listar()).thenReturn(statusList);
+
+      TarefaDTO dto = new TarefaDTO();
+      dto.setIdStatus(1L);
+
+      boolean resultado = validacoes.validarStatusTarefa(dto);
+
+      assertTrue(resultado);
+      verify(statusService, times(1)).listar(); // Verifica se o método listar foi chamado uma vez
+   }
 
    @Test
    public void testValidProjetoDTO() {
