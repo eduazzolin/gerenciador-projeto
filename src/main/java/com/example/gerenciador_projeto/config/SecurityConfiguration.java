@@ -76,7 +76,7 @@ public CorsConfigurationSource corsConfigurationSource() {
     config.setAllowCredentials(true);
     config.setAllowedOriginPatterns(Arrays.asList(
         "http://localhost:3000",
-        "https://gerenciador-projeto-tarefa.onrender.com"
+        "https://gerenciador-projeto-tarefa-1.onrender.com"
     ));
     config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     config.setAllowedHeaders(List.of("*"));
